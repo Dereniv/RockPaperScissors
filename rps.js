@@ -64,7 +64,11 @@ let displayChoice = function() {
     div_choice.appendChild(p_feedback);
 
     // Set up the rounds to play and win count
-    const rounds = +prompt("How many points to win?");
+    let rounds;
+    do {
+        rounds = +prompt("How many points to win?");
+    } while (rounds <= 0);
+    
     let computer_win = 0;
     let player_win = 0;
     let end_game = false;
