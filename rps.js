@@ -26,7 +26,10 @@ let displayChoice = function() {
 
     if (refresh) {
         const div_remove = document.querySelector(".choice");
+        const p_remove  = document.querySelector(".feedback");
+        div_remove.removeChild(p_remove);
         document.body.removeChild(div_remove);
+        
     } 
     // create a selection panel 
     refresh = true;
@@ -55,7 +58,7 @@ let displayChoice = function() {
     const p_feedback  = document.createElement('p');
     p_result.classList.add('result');   
     p_score.classList.add('score');   
-    p_feedback.classList.add('result');   
+    p_feedback.classList.add('feedback');   
     div_choice.appendChild(p_result);
     div_choice.appendChild(p_score);
     div_choice.appendChild(p_feedback);
@@ -64,36 +67,43 @@ let displayChoice = function() {
     const rounds = +prompt("How many points to win?");
     let computer_win = 0;
     let player_win = 0;
+    let end_game = false;
 
     // Play a round and give feedback
     btn_choice = document.querySelectorAll(".rps");
     btn_choice.forEach( (b) => {
         b.addEventListener('click', function buttonPress() {
-            let player_choice = b.textContent;
-            let computer_choice = getComputerChoice();
-            let result = playRPS(player_choice, computer_choice);
-            p_result.textContent = `${player_choice} VS ${computer_choice}`;
-            switch (result) {
-                case "draw":
-                    p_feedback.textContent = `Draw!`;
-                    break;
-                case "yes":
-                    p_feedback.textContent = `You Win!`;
-                    player_win++;
-                    break;
-                case "no":
-                    p_feedback.textContent = `You Lose!`;
-                    computer_win++;
-                    break;
-                default:
-                    p_feedback.textContent = `Sorry, an error occured during the game`;
-                    break;
-            }
-            p_score.textContent = `Player: ${player_win} | Computer: ${computer_win}`; 
-            if (player_win == rounds) {
-                p_feedback.textContent = `Congratulation, you won the game!`;
-            } else if (computer_win == rounds) {
-                p_feedback.textContent = `Sorry, you lost the game :(`;
+            if (end_game) {
+                b.removeEventListener('click', buttonPress);
+            } else {
+                let player_choice = b.textContent;
+                let computer_choice = getComputerChoice();
+                let result = playRPS(player_choice, computer_choice);
+                p_result.textContent = `${player_choice} VS ${computer_choice}`;
+                switch (result) {
+                    case "draw":
+                        p_feedback.textContent = `Draw!`;
+                        break;
+                    case "yes":
+                        p_feedback.textContent = `You Win!`;
+                        player_win++;
+                        break;
+                    case "no":
+                        p_feedback.textContent = `You Lose!`;
+                        computer_win++;
+                        break;
+                    default:
+                        p_feedback.textContent = `Sorry, an error occured during the game`;
+                        break;
+                }
+                p_score.textContent = `Player: ${player_win} | Computer: ${computer_win}`; 
+                if (player_win == rounds) {
+                    p_feedback.textContent = `Congratulation, you won the game!`;
+                    end_game = true;
+                } else if (computer_win == rounds) {
+                    p_feedback.textContent = `Sorry, you lost the game :(`;
+                    end_game = true;
+                };
             };
         });
     });
