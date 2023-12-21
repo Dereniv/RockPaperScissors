@@ -30,6 +30,7 @@ let displayChoice = function() {
     } 
     // create a selection panel 
     refresh = true;
+    btn_play.textContent = 'Restart';
     const div_choice = document.createElement('div');
     const div_result = document.createElement('div');
     const btn_r = document.createElement('button');
