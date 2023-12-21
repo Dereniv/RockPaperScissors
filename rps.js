@@ -23,7 +23,13 @@ function playRPS(player_choice, computer_choice) {
 }
 
 let displayChoice = function() {
+
+    if (refresh) {
+        const div_remove = document.querySelector(".choice");
+        document.body.removeChild(div_remove);
+    } 
     // create a selection panel 
+    refresh = true;
     const div_choice = document.createElement('div');
     const div_result = document.createElement('div');
     const btn_r = document.createElement('button');
@@ -61,7 +67,7 @@ let displayChoice = function() {
     // Play a round and give feedback
     btn_choice = document.querySelectorAll(".rps");
     btn_choice.forEach( (b) => {
-        b.addEventListener('click', () => {
+        b.addEventListener('click', function buttonPress() {
             let player_choice = b.textContent;
             let computer_choice = getComputerChoice();
             let result = playRPS(player_choice, computer_choice);
@@ -92,5 +98,6 @@ let displayChoice = function() {
     });
 }
 
+let refresh = false;
 const btn_play = document.querySelector("#play");
 btn_play.addEventListener('click', displayChoice);
